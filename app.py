@@ -15,8 +15,15 @@ app.config["UPLOAD_FOLDER"] = str(
 
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
 
+
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "leftoverloop.db"
+
+DB_PATH = (
+    Path("/tmp/leftoverloop.db")
+    if os.environ.get("VERCEL")
+    else BASE_DIR / "leftoverloop.db"
+)
+
 
 
 # Connect to the SQLite database

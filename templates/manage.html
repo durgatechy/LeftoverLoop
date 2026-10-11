@@ -1,0 +1,101 @@
+
+{% extends "base.html" %}
+
+{% block title %}Manage Listings | LeftoverLoop{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <p class="eyebrow">YOUR FOOD LISTINGS</p>
+    <h1>Manage Listings 📋</h1>
+    <p>Review your published food offers and their current status.</p>
+</section>
+
+<section class="section">
+
+    {% if all_items %}
+
+    <div class="manage-list">
+
+        {% for item in all_items %}
+
+        <article class="manage-card">
+
+            <div>
+                {% if item.image_filename %}
+                <img
+                    src="{{ url_for('static', filename='uploads/' ~ item.image_filename) }}"
+                    alt="{{ item.name }}"
+                    class="food-image"
+                >
+                {% endif %}
+
+                <h2>{{ item.name }}</h2>
+
+                <p><strong>Provider:</strong> {{ item.donor_name }}</p>
+                <p><strong>Category:</strong> {{ item.category }}</p>
+                <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                <p><strong>Pickup:</strong> {{ item.pickup_location }}</p>
+                <p><strong>Available until:</strong> {{ item.available_until }}</p>
+
+                {% if item.contact_number %}
+                <p><strong>Contact:</strong> {{ item.contact_number }}</p>
+                {% endif %}
+
+                {% if item.description %}
+                <p><strong>Description:</strong> {{ item.description }}</p>
+                {% endif %}
+
+                <p>
+                    <strong>Offer:</strong>
+                    {% if item.offer_type == 'free' %}
+                        Free donation
+                    {% else %}
+                        Reduced-price sale — ₹{{ "%.2f"|format(item.price) }}
+                    {% endif %}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <span class="status-badge">
+                        {% if item.status == 'available' and item.available_until < today %}
+                            Expired
+                        {% else %}
+                            {{ item.status|title }}
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+
+            <form
+                action="{{ url_for('delete_food', food_id=item.id) }}"
+                method="POST"
+                onsubmit="return confirm('Delete this food listing? Its related requests may also be deleted.');"
+            >
+                <button type="submit" class="btn btn-secondary">
+                    Delete Listing
+                </button>
+            </form>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        <div class="food-emoji">📦</div>
+        <h2>No listings yet</h2>
+        <p>Share your first surplus-food listing to get started.</p>
+        <a href="{{ url_for('share_food_page') }}" class="btn btn-primary">
+            Create Listing
+        </a>
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

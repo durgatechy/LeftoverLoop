@@ -1,0 +1,117 @@
+
+{% extends "base.html" %}
+
+{% block title %}Share Food | LeftoverLoop{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <p class="eyebrow">GIVE FOOD A SECOND CHANCE</p>
+    <h1>Share Your Surplus Food 💚</h1>
+    <p>Offer extra edible food as a free donation or a reduced-price sale.</p>
+</section>
+
+<section class="section form-section">
+    <form action="{{ url_for('post_food') }}"
+          method="POST"
+          class="food-form"
+          enctype="multipart/form-data">
+
+        <label for="donor_name">Your name or business name</label>
+        <input id="donor_name"
+               type="text"
+               name="donor_name"
+               maxlength="100"
+               placeholder="Enter provider name"
+               required>
+
+        <label for="contact_number">Contact number *</label>
+        <input id="contact_number"
+               type="tel"
+               name="contact_number"
+               maxlength="20"
+               placeholder="Enter your contact number"
+               required>
+        <small>Visible to everyone viewing your food listing.</small>
+
+        <label for="name">Food name</label>
+        <input id="name"
+               type="text"
+               name="name"
+               maxlength="100"
+               placeholder="Example: Vegetable rice"
+               required>
+
+        <label for="category">Food category</label>
+        <select id="category" name="category" required>
+            <option value="">Choose a category</option>
+            <option value="Meals">Meals</option>
+            <option value="Fruits">Fruits</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Bakery">Bakery</option>
+            <option value="Dairy">Dairy</option>
+            <option value="Snacks">Snacks</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="quantity">Quantity available</label>
+        <input id="quantity"
+               type="text"
+               name="quantity"
+               maxlength="100"
+               placeholder="Example: 10 meal boxes"
+               required>
+
+        <label for="offer_type">How would you like to share it?</label>
+        <select id="offer_type" name="offer_type" required>
+            <option value="">Choose an offer</option>
+            <option value="free">Free donation</option>
+            <option value="sale">Reduced-price sale</option>
+        </select>
+
+        <label for="price">Price in ₹ (enter 0 for a free donation)</label>
+        <input id="price"
+               type="number"
+               name="price"
+               min="0"
+               step="0.01"
+               value="0"
+               required>
+
+        <label for="pickup_location">Pickup location</label>
+        <input id="pickup_location"
+               type="text"
+               name="pickup_location"
+               maxlength="200"
+               placeholder="Enter the pickup area"
+               required>
+
+        <label for="available_until">Available until</label>
+        <input id="available_until"
+               type="date"
+               name="available_until"
+               min="{{ today }}"
+               value="{{ today }}"
+               required>
+
+        <label for="description">Additional details (optional)</label>
+        <textarea id="description"
+                  name="description"
+                  maxlength="1000"
+                  placeholder="Add ingredients, packaging, or pickup instructions"></textarea>
+
+        <label for="food_image">Food photo (optional)</label>
+        <input id="food_image"
+               type="file"
+               name="food_image"
+               accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+        <small>Choose a JPG, PNG, or WEBP photo, up to 5 MB.</small>
+
+        <button type="submit" class="btn btn-primary">
+            Publish Food Listing
+        </button>
+
+    </form>
+</section>
+
+{% endblock %}

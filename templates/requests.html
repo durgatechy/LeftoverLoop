@@ -1,0 +1,93 @@
+
+{% extends "base.html" %}
+
+{% block title %}Food Requests | LeftoverLoop{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <p class="eyebrow">COMMUNITY CONNECTIONS</p>
+    <h1>Food Requests 🤝</h1>
+    <p>Review requests made for your surplus-food listings.</p>
+</section>
+
+<section class="section">
+
+    {% if requests %}
+
+    <div class="request-list">
+        {% for req in requests %}
+
+        <article class="request-card">
+            <h2>{{ req.food_name }}</h2>
+
+            <p><strong>Requested by:</strong> {{ req.requester_name }}</p>
+
+            {% if req.organization %}
+                <p><strong>Organization:</strong> {{ req.organization }}</p>
+            {% endif %}
+
+            {% if req.message %}
+                <p><strong>Message:</strong> {{ req.message }}</p>
+            {% endif %}
+
+            <p><strong>Date:</strong> {{ req.created_at }}</p>
+
+            <p>
+                <strong>Status:</strong>
+                <span class="status-badge">{{ req.status|title }}</span>
+            </p>
+
+            {% if req.status == 'pending' %}
+
+            <div class="hero-actions">
+                <form action="{{ url_for('update_request', request_id=req.id) }}"
+                      method="POST">
+                    <input type="hidden" name="status" value="accepted">
+                    <button type="submit" class="btn btn-primary">
+                        Accept
+                    </button>
+                </form>
+
+                <form action="{{ url_for('update_request', request_id=req.id) }}"
+                      method="POST">
+                    <input type="hidden" name="status" value="rejected">
+                    <button type="submit" class="btn btn-secondary">
+                        Reject
+                    </button>
+                </form>
+            </div>
+
+            {% elif req.status == 'accepted' %}
+
+            <form action="{{ url_for('update_request', request_id=req.id) }}"
+                  method="POST">
+                <input type="hidden" name="status" value="collected">
+                <button type="submit" class="btn btn-primary">
+                    Mark as Collected
+                </button>
+            </form>
+
+            {% endif %}
+
+        </article>
+
+        {% endfor %}
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        <div class="food-emoji">💌</div>
+        <h2>No requests yet</h2>
+        <p>Food requests will appear here when someone requests a listing.</p>
+        <a href="{{ url_for('find_food_page') }}" class="btn btn-primary">
+            Browse Food
+        </a>
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

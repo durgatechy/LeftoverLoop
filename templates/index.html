@@ -1,0 +1,98 @@
+
+{% extends "base.html" %}
+
+{% block title %}Home | LeftoverLoop{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <p class="eyebrow">♻️ A little food can make a big difference</p>
+
+        <h1>Good Food.<br>Less Waste.<br>More Hope.</h1>
+
+        <p>
+            Have extra food? Share it with someone who needs it.
+            Discover surplus food nearby through free donations
+            and affordable food offers.
+        </p>
+
+        <div class="hero-actions">
+            <a href="{{ url_for('find_food_page') }}" class="btn btn-primary">
+                Find Food
+            </a>
+
+            <a href="{{ url_for('share_food_page') }}" class="btn btn-secondary">
+                Share Food
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="hero-emoji">🥗</div>
+        <h3>Food is too valuable to waste.</h3>
+        <p>Share a meal. Support your community.</p>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="stat-card">
+        <span class="stat-icon">🍱</span>
+        <h2>{{ total_donations }}</h2>
+        <p>Free Food Listings</p>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-icon">🤝</span>
+        <h2>{{ total_requests }}</h2>
+        <p>Food Requests</p>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-icon">🌱</span>
+        <h2>1</h2>
+        <p>Shared Goal: Less Waste</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <p class="eyebrow">HOW IT WORKS</p>
+        <h2>Small actions. Meaningful impact.</h2>
+        <p>Three simple steps to give surplus food a second chance.</p>
+    </div>
+
+    <div class="food-grid">
+        <article class="food-card">
+            <div class="food-emoji">🍲</div>
+            <h3>1. Share Extra Food</h3>
+            <p>List edible surplus food from your home, event, or business.</p>
+        </article>
+
+        <article class="food-card">
+            <div class="food-emoji">🔎</div>
+            <h3>2. Find Food Nearby</h3>
+            <p>Browse free donations and reduced-price food listings.</p>
+        </article>
+
+        <article class="food-card">
+            <div class="food-emoji">💚</div>
+            <h3>3. Connect and Collect</h3>
+            <p>Send a request and coordinate pickup with the food provider.</p>
+        </article>
+    </div>
+</section>
+
+<section class="post-section">
+    <div>
+        <p class="eyebrow">YOUR EXTRA FOOD MATTERS</p>
+        <h2>Make someone's day a little better.</h2>
+        <p>Post a food listing and help good food reach someone who can use it.</p>
+    </div>
+
+    <a href="{{ url_for('share_food_page') }}" class="btn btn-primary">
+        Share Food Now
+    </a>
+</section>
+
+{% endblock %}

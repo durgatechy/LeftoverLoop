@@ -1,0 +1,127 @@
+
+{% extends "base.html" %}
+
+{% block title %}Find Food | LeftoverLoop{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <p class="eyebrow">DISCOVER SURPLUS FOOD</p>
+    <h1>Find Food Near You 🍱</h1>
+    <p>Browse available food donations and affordable food offers.</p>
+</section>
+
+<section class="section">
+    {% if food_items %}
+
+    <div class="food-grid">
+        {% for item in food_items %}
+        <article class="food-card">
+
+            {% if item.image_filename %}
+            <img
+                src="{{ url_for('static', filename='uploads/' ~ item.image_filename) }}"
+                alt="Photo of {{ item.name }}"
+                class="food-photo"
+                loading="lazy">
+            {% else %}
+            <div class="food-emoji">
+                {% if item.category|lower == 'fruits' %}
+                    🍎
+                {% elif item.category|lower == 'vegetables' %}
+                    🥦
+                {% elif item.category|lower == 'bakery' %}
+                    🥖
+                {% elif item.category|lower == 'dairy' %}
+                    🥛
+                {% elif item.category|lower == 'meals' %}
+                    🍱
+                {% else %}
+                    🍲
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if item.offer_type == 'free' %}
+                <span class="food-badge">💚 Free Donation</span>
+            {% else %}
+                <span class="food-badge">🏷️ Reduced Price</span>
+            {% endif %}
+
+            <h2>{{ item.name }}</h2>
+            <p>{{ item.description or 'Fresh surplus food available to share.' }}</p>
+
+            <div class="food-details">
+                <p><strong>Category:</strong> {{ item.category }}</p>
+                <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                <p><strong>Provider:</strong> {{ item.donor_name }}</p>
+                <p>
+                    <strong>Contact:</strong>
+                    {% if item.contact_number %}
+                        <a href="tel:{{ item.contact_number }}">{{ item.contact_number }}</a>
+                    {% else %}
+                        Not provided
+                    {% endif %}
+                </p>
+                <p><strong>Pickup:</strong> {{ item.pickup_location }}</p>
+                <p><strong>Available until:</strong> {{ item.available_until }}</p>
+            </div>
+
+            <div class="food-price">
+                {% if item.offer_type == 'free' %}
+                    FREE
+                {% else %}
+                    ₹{{ "%.2f"|format(item.price) }}
+                {% endif %}
+            </div>
+
+            <form action="{{ url_for('request_food', food_id=item.id) }}"
+                  method="POST" class="food-form">
+
+                <label for="requester-{{ item.id }}">Your name</label>
+                <input id="requester-{{ item.id }}"
+                       type="text"
+                       name="requester_name"
+                       placeholder="Enter your name"
+                       maxlength="100"
+                       required>
+
+                <label for="organization-{{ item.id }}">
+                    Organization (optional)
+                </label>
+                <input id="organization-{{ item.id }}"
+                       type="text"
+                       name="organization"
+                       placeholder="Community group or organization"
+                       maxlength="150">
+
+                <label for="message-{{ item.id }}">Message (optional)</label>
+                <textarea id="message-{{ item.id }}"
+                          name="message"
+                          placeholder="Add a short message"
+                          maxlength="500"></textarea>
+
+                <button type="submit" class="btn btn-primary">
+                    Request This Food
+                </button>
+            </form>
+
+        </article>
+        {% endfor %}
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        <div class="food-emoji">🥗</div>
+        <h2>No food listings available yet</h2>
+        <p>Be the first to share surplus food with your community.</p>
+        <a href="{{ url_for('share_food_page') }}" class="btn btn-primary">
+            Share Food
+        </a>
+    </div>
+
+    {% endif %}
+</section>
+
+{% endblock %}
